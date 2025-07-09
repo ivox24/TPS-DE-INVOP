@@ -1,0 +1,9 @@
+tp1.aux
+tp1.log
+tp1.fdb_latexmk
+tp1.fls
+tp1.bbl
+tp1.blg
+tp1.toc
+tp1.lof
+tp1.lot

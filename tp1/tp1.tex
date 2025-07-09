@@ -1,0 +1,1144 @@
+\documentclass[10pt,a4paper]{article}
+
+\input{AEDmacros}
+\usepackage{caratula}
+\usepackage[spanish]{babel} 
+\usepackage{amsfonts} 
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\titulo{Trabajo práctico - Programación Lineal}
+%\subtitulo{Subtítulo del tp}
+
+\fecha{\today}
+
+\materia{Intro a IO y Optimización}
+
+
+\integrante{Lamonica, Ivo}{66/22}{Completaer}
+\integrante{Masetto, Lautaro}{1052/22}{Completaer}
+\integrante{Vanotti, Franco}{464/23}{fvanotti15@gmail.com}
+
+\graphicspath{{../static/}}
+
+\setcounter{section}{-1}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{Introducción} 
+
+Una refinería produce tres productos, combustible para aviones, combustible para vehículos y kerosene. Gracias a
+los buenos precios de venta que mantiene, la refinería vende todos los productos que produce. \\ 
+
+El proceso de producción se compone de refinado, fraccionado y embalaje. Para realizar estas tareas, la empresa cuenta con 4 sectores:
+
+
+\begin{itemize}
+	\item refinado: capacidad mensual de 38.000 horas, gasto fijo de \$5.000.000.
+	\item fraccionado: capacidad mensual de 80.000 horas, gasto fijo de \$5.000.000.
+	\item embalaje de combustible para aviones: capacidad mensual de 4.000 horas, gasto fijo de \$2.000.000.
+	\item embalaje de combustible para vehículos: capacidad mensual de 6.000 horas, gasto fijo de \$1.000.000.
+	\item embalaje de kerosene: capacidad mensual de 7.000 horas, gasto fijo de \$500.000.
+\end{itemize}
+
+El tiempo requerido para refinar 1000 litros de combustible para aviones es de 10 horas, mientras que para fraccionarlos son necesarias 20 horas y 4 para su embalaje. 
+Para el combustible para vehículos los tiempos son de 5, 10 y 2 horas respectivamente, y para los 1000 litros de kerosene de 3, 6 y 1 hora. \\ 
+
+El precio de venta es de \$16000 para los mil litros de combustible para aviones, de \$8000 para los mil litros de
+combustible para vehículos y de \$4000 los mil litros de kerosene. El costo de la materia prima para mil litros de
+combustible para aviones es de \$4000, el de refinado de \$4100, el de fraccionado de \$1000, y el de embalaje de
+\$1000. Para 1000 litros de combustible para vehículos, los costos son de \$1000, \$3000, \$600 y \$500, respectivamente.
+Y para 1000 litros de kerosene de \$500, \$1500, \$400 y \$400. \\
+
+En el último mes, la refinería produjo 500.000 litros de combustible para aviones, 3.000.000 litros de combustible
+para vehículos y 6.000.000 litros de kerosene, lo que implicí una pérdida en el combustible para aviones al considerar
+prorrateados los gastos fijos. \\
+
+El gerente de ventas señaló que estudios de mercado indican que no es posible aumentar el precio de venta del combustible para aviones y, por lo tanto,
+para aumentar las ganancias de la empresa se debe discontinuar su producción. \\
+
+Sin embargo, la conclusión del jefe del departamento de embalaje de combustible para aviones es distinta. Según él,
+los gastos fijos de su sector inciden tanto en el costo de cada litro de combustible para aviones porque se produce
+poco de este producto, y para aumentar las ganancias de la empresa propone que se produzca más. \\
+
+En vista de las distintas propuestas, el director de la empresa necesita ayuda para evaluarlas y tomar las decisiones
+apropiadas. Para esto, analizar los siguientes ítems, \textbf{evitando reoptimizar en todos los casos que sea posible:}
+
+\clearpage
+
+\section{Ejercicios} 
+
+\begin{enumerate}
+    \item Calcular la ganancia o pérdida (prorrateando los gastos fijos) de cada producto que se obtuvo en el mes
+    anterior (cuando se produjeron 500.000 litros de combustible para aviones, 3.000.000 de combustible para
+    vehículos y 6.000.000 litros de kerosene) y la ganancia (o pérdida) total de la compañía. \\
+
+    \textbf{Calcular Costos Variables:} Usamos los costos por cada 1.000 litros y multiplicamos por la producción total para cada producto. \\
+
+    - \underline{Combustible para aviones} (500.000 L / 1.000 = 500 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 500 × 4.000 = \$2.000.000
+        \item Refinado: 500 × 4.100 = \$2.050.000
+        \item Fraccionado: 500 × 1.000 = \$500.000
+        \item Embalaje: 500 × 1.000 = \$500.000 \\
+        \item Total: \$5.050.000
+
+    \end{itemize}
+
+    - \underline{Combustible para vehículos} (3.000.000 L / 1.000 = 3.000 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 3.000 × 1.000 = \$3.000.000
+        \item Refinado: 3.000 × 3.000 = \$9.000.000
+        \item Fraccionado: 3.000 × 600 = \$1.800.000
+        \item Embalaje: 3.000 × 500 = \$1.500.000 \\
+        \item Total: \$15.300.000
+
+    \end{itemize}
+
+    - \underline{Kerosene} (6.000.000 L / 1.000 = 6.000 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 6.000 × 500 = \$3.000.000
+        \item Refinado: 6.000 × 1.500 = \$9.000.000
+        \item Fraccionado: 6.000 × 400 = \$2.400.000
+        \item Embalaje: 6.000 × 400 = \$2.400.000 \\
+        \item Total: \$16.800.000\\
+
+    \end{itemize}
+
+    \textbf{Calcular Ingresos por Ventas:}
+
+    \begin{itemize}
+
+        \item Aviones: 500 × 16.000 = \$8.000.000
+        \item Vehículos: 3.000 × 8.000 = \$24.000.000
+        \item Kerosene: 6.000 × 4.000 = \$24.000.000 \\
+
+    \end{itemize}
+
+    \textbf{Ganancia Bruta por Producto:}
+
+    \begin{center}
+    \scalebox{1}{
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Producto} & \textbf{Ingreso} & \textbf{Costo} & \textbf{Ganancia bruta} \\
+        \hline
+        Combustible Aviones & 8.000.000 & 5.050.000 & 2.950.000 \\
+        \hline
+        Combustible Vehículos & 24.000.000 & 15.300.000 & 8.700.000 \\
+        \hline
+        Kerosene & 24.000.000 & 16.800.000 & 7.200.000 \\
+        \hline
+    \end{tabular}
+    }
+    \end{center}
+    
+    \clearpage
+
+    \textbf{Prorratear Gastos Fijos:} \\
+
+    \underline{Gasto Fijo Total}:
+
+    \begin{itemize}
+
+        \item Refinado: \$5.000.000
+        \item Fraccionado: \$5.000.000
+        \item Embalaje aviones: \$2.000.000
+        \item Embalaje vehículos: \$1.000.000
+        \item Embalaje kerosene: \$500.000 \\
+        \item Total: \$13.500.000 \\
+
+    \end{itemize}
+
+    \underline{Prorrateamos los gastos según uso de horas}: \\
+
+    Primero, calculamos las horas usadas por cada producto en cada etapa (por cada 1000 litros)
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Unidades} & \textbf{Refinado (h)} & \textbf{Fraccionado (h)} & \textbf{Embalaje (h)}\\
+            \hline
+            Combustible Aviones & 500 & 10 × 500 = 5.000 & 20 × 500 = 10.000 & 4 × 500 = 2.000\\
+            \hline
+            Combustible Vehículos & 3.000 & 5 × 3.000 = 15.000 & 10 × 3.000 = 30.000 & 2 × 3.000 = 6.000\\
+            \hline
+            Kerosene & 6.000 & 3 × 6.000 = 18.000 & 6 × 6.000 = 36.000 & 	1 × 6.000 = 6.000\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \begin{enumerate}[label=\alph*)]
+
+        \item Refinado (38.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Aviones: 5.000/38.000 × 5.000.000 = \$657.895
+            \item Vehículos: 15.000/38.000 × 5.000.000 = \$1.973.684
+            \item Kerosene: 18.000/38.000 × 5.000.000 = \$2.368.421 \\
+    
+        \end{itemize}
+
+        \item Fraccionado (76.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Aviones: 10.000/76.000 × 5.000.000 = \$657.895
+            \item Vehículos: 30.000/76.000 × 5.000.000 = \$1.973.684
+            \item Kerosene: 36.000/76.000 × 5.000.000 = \$2.368.421 \\
+    
+        \end{itemize}
+
+        \item Embalaje (por sector):
+        
+        \begin{itemize}
+
+            \item Aviones: \$2.000.000
+            \item Vehículos: \$1.000.000
+            \item Kerosene: \$500.000\\
+    
+        \end{itemize}
+
+    \end{enumerate}
+
+    \vspace{0.5em}
+
+    \underline{Gasto Fijo Total por Producto}: \\
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Refinado} & \textbf{Fraccionado} & \textbf{Embalaje} & \textbf{Gasto Fijo Total} \\
+            \hline
+            Combustible Aviones & 657.895 & 657.895 & 2.000.000 & 3.315.790\\
+            \hline
+            Combustible Vehículos & 1.973.684 & 1.973.684 & 1.000.000 & 4.947.368\\
+            \hline
+            Kerosene & 2.368.421 & 2.368.421 & 500.000 & 5.236.842\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Neta por Producto:} 
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Ganancia bruta} & \textbf{Gasto fijo} & \textbf{Ganancia neta} \\
+            \hline
+            Combustible Aviones & 2.950.000 & 3.315.790 & -365.790 \\
+            \hline
+            Combustible Vehículos & 8.700.000 & 4.947.368 & 3.752.632 \\
+            \hline
+            Kerosene & 7.200.000 & 5.236.842 & 	1.963.158 \\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Total de la Empresa: } -\$365.790 + \$3.752.632 + \$1.963.158 = \$5.350.000
+
+    \item Si la empresa no hubiese producido combustible para aviones manteniendo en los mismos valores los otros
+    productos, ¿la ganancia de la compañía habría sido mejor? Suponer que se cierra el sector de embalaje de
+    combustibles para aviones. 
+
+    \vspace{0.5em}
+
+    \textbf{Datos Relevantes:}
+
+    \begin{itemize}
+
+        \item Se elimina completamente el combustible para aviones.
+        \item Se mantiene igual la producción de:
+        
+        \begin{itemize}
+
+            \item Combustible para vehículos: 3.000.000 L
+            \item Kerosene: 6.000.000 L
+    
+        \end{itemize}
+
+        \item El sector de embalaje para aviones se cierra, así que se eliminan sus gastos fijos (\$2.000.000).
+        \item Los demás sectores siguen funcionando con los productos restantes. \\
+
+    \end{itemize}
+
+    Entonces, la ganacia bruta del combustible para vehículos y del kerosene siguen siendo: \\
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Ingreso} & \textbf{Costo} & \textbf{Ganancia bruta} \\
+            \hline
+            Combustible Vehículos & 24.000.000 & 15.300.000 & 8.700.000 \\
+            \hline
+            Kerosene & 24.000.000 & 16.800.000 & 7.200.000 \\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    Lo que cambian son los gastos fijos: \\
+
+    \textbf{Capacidad Liberada:} \\
+
+    Al eliminar la producción de combustiblede aviones:
+
+    \begin{itemize}
+
+        \item Refinado: Se liberan 5.000 h
+        \item Fraccionado: Se liberan 10.000 h
+        \item Embalaje Combustible Aviones: se cierra
+
+    \end{itemize}
+
+    \vspace{0.5em}
+
+    \textbf{Prorratear Gastos Fijos:} \\
+
+    \underline{Gasto Fijo Total}:
+
+    \begin{itemize}
+
+        \item Refinado: \$5.000.000
+        \item Fraccionado: \$5.000.000
+        \item Embalaje vehículos: \$1.000.000
+        \item Embalaje kerosene: \$500.000 \\
+        \item Total: \$11.500.000 \\
+
+    \end{itemize}
+
+    \underline{Prorrateamos los gastos según uso de horas}: \\
+
+    Primero, calculamos las horas usadas por cada producto en cada etapa (por cada 1000 litros)
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Unidades} & \textbf{Refinado (h)} & \textbf{Fraccionado (h)} & \textbf{Embalaje (h)}\\
+            \hline
+            Combustible Vehículos & 3.000 & 5 × 3.000 = 15.000 & 10 × 3.000 = 30.000 & 2 × 3.000 = 6.000\\
+            \hline
+            Kerosene & 6.000 & 3 × 6.000 = 18.000 & 6 × 6.000 = 36.000 & 	1 × 6.000 = 6.000\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \clearpage
+
+    \begin{enumerate}[label=\alph*)]
+
+        \item Refinado (33.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Vehículos: 15.000/33.000 × 5.000.000 = \$2.272.727
+            \item Kerosene: 18.000/33.000 × 5.000.000 = \$2.727.273 \\
+    
+        \end{itemize}
+
+        \item Fraccionado (66.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Vehículos: 30.000/66.000 × 5.000.000 = \$2.272.727
+            \item Kerosene: 36.000/6.000 × 5.000.000 = \$2.727.273 \\
+    
+        \end{itemize}
+
+        \item Embalaje (por sector):
+        
+        \begin{itemize}
+
+            \item Vehículos: \$1.000.000
+            \item Kerosene: \$500.000 \\
+    
+        \end{itemize}
+
+    \end{enumerate}
+
+    \vspace{0.5em}
+
+    \underline{Gasto Fijo Total por Producto}: \\
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Refinado} & \textbf{Fraccionado} & \textbf{Embalaje} & \textbf{Gasto Fijo Total} \\
+            \hline
+            Combustible Vehículos & 2.272.727 & 2.272.727 & 1.000.000 & 5.545.454\\
+            \hline
+            Kerosene & 2.727.273 & 2.727.273 & 500.000 & 5.954.546\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Neta por Producto:} 
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Ganancia bruta} & \textbf{Gasto fijo} & \textbf{Ganancia neta} \\
+            \hline
+            Combustible Vehículos & 8.700.000 &  5.545.454 & 3.154.546 \\
+            \hline
+            Kerosene & 7.200.000 & 5.954.546 & 	1.245.454 \\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Total de la Empresa: } \$3.154.546 + \$1.245.454  = \$4.400.000
+
+    \vspace{0.5em}
+
+    \textbf{Conclusión }:
+
+    La ganancia habría sido menor si no se producía combustible para aviones. \\
+    Incluso aunque el sector de embalaje para combustilbe para avion se cerrara y sus gastos se eliminaran, la empresa perdería aproximadamente \$2 millones de ganancia. 
+
+    Esto a priori refuerza el argumento del jefe del área de embalaje, quien propone aumentar la producción de combustible para aviones, 
+    ya que diluye el impacto de los costos fijos sobre cada litro y mejora la ganancia total. \\
+    
+    \item ¿Y si hubiese aumentado lo máximo posible la producción de los otros productos? Suponer que se cierra el
+    sector de embalaje de combustibles para aviones.
+
+    Esto implica resolver un problema de programación lineal para maximizar la \textbf{ganancia}, teniendo en cuenta:
+
+    \begin{itemize}
+
+        \item Restricciones de horas por sector
+        \item Ganancias por producto.
+        \item No se puede producir combustible para aviones. \\
+
+    \end{itemize}
+
+    \textbf{Variables}
+
+    \begin{itemize}
+
+        \item $x_{1}$: miles de litros de combustible para aviones (no se produce, así que se elimina)
+        \item $x_{2}$: miles de litros de combustible para vehículos.
+        \item $x_{3}$: miles de litros de kerosene. \\
+
+    \end{itemize}
+
+    \clearpage
+
+    \textbf{Función objetivo: Maximizar la ganancia total}
+
+    \vspace{1em}
+
+    \underline{Ganancia por 1.000 litros}:
+
+    \begin{itemize}
+
+        \item Combustible para vehículos:
+        \begin{itemize}
+
+            \item Precio de Venta: \$8.000.
+            \item Costos variables: \$1.000 + \$3.000 + \$600 + \$500 = \$5.100.
+            \item Ganancia por 1.000 litros: \$2.900. \\
+    
+        \end{itemize}
+
+        \item Kerosene:
+        \begin{itemize}
+
+            \item Precio de Venta: \$4.000.
+            \item Costos variables: \$500 + \$1.500 + \$400 + \$400 = \$2.800.
+            \item Ganancia por 1.000 litros: \$1.200. \\
+    
+        \end{itemize}
+
+    \end{itemize}
+
+    \underline{Función objetivo}: 
+
+    \begin{center}
+        
+        Maximizar 2.900 $x_{2}$ + 1.200 $x_{3}$
+
+    \end{center}
+
+    \underline{Restricciones}: 
+
+    \begin{itemize}
+
+        \item Refinado (máximo 38.000 h):  5 $x_{2}$ + 3 $x_{3}$ $\leq$ 38.000
+        \item Fraccionado (máximo 80.000 h): 10 $x_{2}$ + 6 $x_{3}$ $\leq$ 80.000
+        \item Embalaje Combustible Vehículos (máximo 6.000 h): 2 $x_{2}$ $\leq$ 6.000 $\rightarrow$ $x_{2}$ $\leq$ 3.000.
+        \item Embalaje K (máximo 7.000 h): $x_{3}$ $\leq$ 7.000
+        \item Condiciones de no negatividad: $x_{2}$  $\geq$ 0, $x_{3}$ $\geq$ 0\\
+
+    \end{itemize}
+
+    \underline{Solucion del Modelo}: 
+
+    \begin{itemize}
+
+        \item $x_{2}$ = 3.000
+        \item $x_{3}$ = 7.000
+        \item $Z$ = \$17.100.000\\
+
+    \end{itemize}
+
+    \underline{Verificamos si cumple las restricciones}:
+
+    \begin{itemize}
+
+        \item Refinado (máximo 38.000 h):  5 x 3.000 + 3 x 7.000 = 36.000 $\leq$ 38.000
+        \item Fraccionado (máximo 80.000 h): 10 x 3.000 + 6 x 7.000 = 72.000 $\leq$ 80.000
+        \item Embalaje Combustible Vehículos (máximo 6.000 h): 3.000 $\leq$ 3.000.
+        \item Embalaje K (máximo 7.000 h): 7.000 $\leq$ 7.000
+        \item Condiciones de no negatividad: 3.000  $\geq$ 0, 7.000 $\geq$ 0\\
+
+    \end{itemize}
+
+    Ahora que verificamos que es una solucion factible, tenemos que restarle los gastos fijos a z para determinar la ganancia total de la compañía.\\
+
+    \textbf{Gastos Fijos}:
+
+    \begin{itemize}
+
+        \item Refinado: \$5.000.000.
+        \item Fraccionado: \$5.000.000
+        \item Embalaje Combustible Vehículos: \$1.000.000.
+        \item Embalaje Kerosene: \$500.000.
+        \item Total: \$11.500.000.
+
+    \end{itemize}
+
+    Luego, la ganancia total de la compañía es: \$17.100.000 - \$11.500.000 = \$5.600.000. \\
+
+    \textbf{Conclusión }:
+
+    La ganancia habría sido mayor si no se producía combustible para aviones pero se aumetaba al máximo posible 
+    la producción de los otros productos. 
+
+    Esto a priori refuerza el argumento del gerente de ventas, quien propone discontinuar la producción de combustible para aviones, 
+    ya que no es posible aumentar el precio de venta del mismo y de esta forma evitar perdidas.
+
+    Sin embargo, no se sabe si la cantidad producida el mes pasado de cada producto fue la óptima, por lo que quizas no es que no convenga no producir
+    combustible para avion sino que quizas conviene producir distintas cantidades de los porductos para poder generar mas ganancias.
+
+
+    \item Determinar la cantidad óptima de producción mensual de cada producto para maximizar la ganancia de la compañía.
+    
+    Para determinar la cantidad óptima de producción se pueden plantea un modelo de programación lineal asumiendo que todos los sectores producen algo.\\
+
+    \textbf{Variables}
+
+    \begin{itemize}
+
+        \item $x_{1}$: miles de litros de combustible para aviones.
+        \item $x_{2}$: miles de litros de combustible para vehículos.
+        \item $x_{3}$: miles de litros de kerosene. \\
+
+    \end{itemize}
+
+    \textbf{Función objetivo: Maximizar la ganancia total}
+
+    \vspace{0.5em}
+
+    \underline{Ganancia por 1.000 litros}:
+
+    \begin{itemize}
+
+        \item Combustible para aviones:
+        \begin{itemize}
+
+            \item Precio de Venta: \$16.000.
+            \item Costos variables: \$4.000 + \$4.100 + \$1.000 + \$1.000 = \$10.100.
+            \item Ganancia por 1000 litros: \$5.900. \\
+    
+        \end{itemize}
+
+        \item Combustible para vehículos:
+        \begin{itemize}
+
+            \item Precio de Venta: \$8.000.
+            \item Costos variables: \$1.000 + \$3.000 + \$600 + \$500 = \$5.100.
+            \item Ganancia por 1.000 litros: \$2.900. \\
+    
+        \end{itemize}
+
+        \item Kerosene:
+        \begin{itemize}
+
+            \item Precio de Venta: \$4.000.
+            \item Costos variables: \$500 + \$1.500 + \$400 + \$400 = \$2.800.
+            \item Ganancia por 1.000 litros: \$1.200. \\
+    
+        \end{itemize}
+
+    \end{itemize}
+
+
+    \underline{Función objetivo}: 
+
+    \begin{center}
+        
+        Maximizar 5.900 $x_{1}$ + 2.900 $x_{2}$ + 1.200 $x_{3}$
+
+    \end{center}
+
+
+    \underline{Restricciones}: 
+
+    \begin{itemize}
+
+        \item Refinado (máximo 38.000 h): 10 $x_{1}$ + 5 $x_{2}$ + 3 $x_{3}$ $\leq$ 38.000
+        \item Fraccionado (máximo 80.000 h): 20 $x_{1}$ + 10 $x_{2}$ + 6 $x_{3}$ $\leq$ 80.000
+        \item Embalaje Combustible Aviones (máximo 4.000 h): 4 $x_{1}$ $\leq$ 4.000 $\rightarrow$ $x_{1}$ $\leq$ 1.000.
+        \item Embalaje Combustible Vehículos (máximo 6.000 h): 2 $x_{2}$ $\leq$ 6.000 $\rightarrow$ $x_{2}$ $\leq$ 3.000.
+        \item Embalaje K (máximo 7.000 h): $x_{3}$ $\leq$ 7.000
+        \item Condiciones de no negatividad: $x_{1}$ $\geq$ 0, $x_{2}$ $\geq$ 0, $x_{3}$ $\geq$ 0\\
+
+    \end{itemize}
+
+    \clearpage
+
+    \underline{Solucion del Modelo}: 
+
+    \begin{itemize}
+
+        \item $x_{1}$ = 1.000
+        \item $x_{2}$ = 3.000
+        \item $x_{3}$ = 4.333,333333333333
+        \item $Z$ = \$19.800.000\\
+
+    \end{itemize}
+
+    \underline{Verificamos si cumple las restricciones}:
+
+    \begin{itemize}
+
+        \item Refinado (máximo 38.000 h): 10 x 1.000 + 5 x 3.000 + 3 x 4.333,333333333333 = 38.000 $\leq$ 38.000
+        \item Fraccionado (máximo 80.000 h): 20 x 1.000 + 10 x 3.000 + 6 x 4.333,333333333333 = 76.000 $\leq$ 80.000
+        \item Embalaje Combustible Aviones (máximo 4.000 h): 1.000 $\leq$ 1.000.
+        \item Embalaje Combustible Vehículos (máximo 6.000 h): 3.000 $\leq$ 3.000.
+        \item Embalaje K (máximo 7.000 h): 4.333,333333333333 $\leq$ 7.000
+        \item Condiciones de no negatividad: 1.000 $\geq$ 0, 3.000 $\geq$ 0, 4.333,333333333333 $\geq$ 0 \\
+
+    \end{itemize}
+
+    Calculamos los gastos fijos:\\
+
+    \textbf{Gastos Fijos}:
+
+    \begin{itemize}
+
+        \item Refinado: \$5.000.000.
+        \item Fraccionado: \$5.000.000
+        \item Embalaje Combustible Aviones: \$2.000.000.
+        \item Embalaje Combustible Vehículos: \$1.000.000.
+        \item Embalaje K: \$500.000.
+        \item Total: \$13.500.000. \\
+
+    \end{itemize}
+
+    Luego, la ganancia total de la compañía es: \$19.800.000 - \$13.500.000 = \$6.300.000. \\
+
+    \textbf{Conclusión }:
+
+    Como se puede observar, la cantidad óptima de producción mensual de combustible para aviones es mayor a cero, es 
+    decir, la conclusión del jefe del área de embalaje, parece ser la acertada. \\
+    Esto debido a que al aumentar la producción de combustible para aviones, se diluye el impacto de los costos fijos sobre cada litro y 
+    mejora la ganancia total. \\
+
+
+    \item Indicar al director estas cantidades, el costo por 1000 litros de cada producto (prorrateando los costos fijos)
+     y la ganancia total de la empresa. \\
+
+     La producción óptima queda de la siguiente manera:
+
+     \begin{itemize}
+
+        \item $x_{1}$ = 1.000
+        \item $x_{2}$ = 3.000
+        \item $x_{3}$ = 4.333,333333333333
+
+    \end{itemize}
+
+
+     \textbf{Calcular Costos Variables:} \\
+
+    - \underline{Combustible para aviones} (1.000 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 1.000 × 4.000 = \$4.000.000
+        \item Refinado: 1.000 × 4.100 = \$4.100.000
+        \item Fraccionado: 1.000 × 1.000 = \$1.000.000
+        \item Embalaje: 1.000 × 1.000 = \$1.000.000 \\
+        \item Total: \$10.100.000
+
+    \end{itemize}
+
+    - \underline{Combustible para vehículos} (3.000 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 3.000 × 1.000 = \$3.000.000
+        \item Refinado: 3.000 × 3.000 = \$9.000.000
+        \item Fraccionado: 3.000 × 600 = \$1.800.000
+        \item Embalaje: 3.000 × 500 = \$1.500.000 \\
+        \item Total: \$15.300.000
+
+    \end{itemize}
+
+    - \underline{Kerosene} (4.333,333333333333 unidades):
+
+    \begin{itemize}
+
+        \item Materia prima: 4.333,333333333333 × 500 = \$2.166.667
+        \item Refinado: 4.333,333333333333 × 1.500 = \$6.500.000
+        \item Fraccionado: 4.333,333333333333 × 400 = \$1.733.333
+        \item Embalaje: 4.333,333333333333 × 400 = \$1.733.333 \\
+        \item Total: \$12.133.333\\
+
+    \end{itemize}
+
+    \textbf{Calcular Ingresos por Ventas:}
+
+    \begin{itemize}
+
+        \item Aviones: 1.000 × 16.000 = \$16.000.000
+        \item Vehículos: 3.000 × 8.000 = \$24.000.000
+        \item Kerosene: 4.333,333333333333 × 4.000 = \$17.333.333 \\
+
+    \end{itemize}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Bruta por Producto:}
+
+    \begin{center}
+    \scalebox{1}{
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Producto} & \textbf{Ingreso} & \textbf{Costo} & \textbf{Ganancia bruta} \\
+        \hline
+        Combustible Aviones & 16.000.000 & 10.100.000 & 5.900.000 \\
+        \hline
+        Combustible Vehículos & 24.000.000 & 15.300.000 & 8.700.000 \\
+        \hline
+        Kerosene & 17.333.333 & 12.133.333 & 5.200.000 \\
+        \hline
+    \end{tabular}
+    }
+    \end{center}
+    
+    \vspace{1em}
+
+    \textbf{Prorratear Gastos Fijos:} \\
+
+    \underline{Gasto Fijo Total}:
+
+    \begin{itemize}
+
+        \item Refinado: \$5.000.000
+        \item Fraccionado: \$5.000.000
+        \item Embalaje aviones: \$2.000.000
+        \item Embalaje vehículos: \$1.000.000
+        \item Embalaje kerosene: \$500.000 \\
+        \item Total: \$13.500.000 \\
+
+    \end{itemize}
+
+    \underline{Prorrateamos los gastos según uso de horas}: \\
+
+    Primero, calculamos las horas usadas por cada producto en cada etapa (por cada 1000 litros)
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Unidades} & \textbf{Refinado (h)} & \textbf{Fraccionado (h)} & \textbf{Embalaje (h)}\\
+            \hline
+            Combustible Aviones & 1.000 & 10 × 1.000 = 10.000 & 20 × 1.000 = 20.000 & 4 × 1.000 = 4.000\\
+            \hline
+            Combustible Vehículos & 3.000 & 5 × 3.000 = 15.000 & 10 × 3.000 = 30.000 & 2 ×  = 6.000\\
+            \hline
+            Kerosene & 4.333,33 & 3 × 4.333,33 = 13.000 & 6 × 4.333,33 = 26.000 & 1 × 4.333,33 = 4.333,33\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \clearpage
+
+    \begin{enumerate}[label=\alph*)]
+
+        \item Refinado (38.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Aviones: 10.000/38.000 × 5.000.000 = \$1.315.790
+            \item Vehículos: 15.000/38.000 × 5.000.000 = \$1.973.684
+            \item Kerosene: 13.000/38.000 × 5.000.000 = \$1.710.526 \\
+    
+        \end{itemize}
+
+        \item Fraccionado (76.000 horas totales):
+        
+        \begin{itemize}
+
+            \item Aviones: 20.000/76.000 × 5.000.000 = \$1.315.790
+            \item Vehículos: 30.000/76.000 × 5.000.000 = \$1.973.684
+            \item Kerosene: 26.000/76.000 × 5.000.000 = \$1.710.526 \\
+    
+        \end{itemize}
+
+        \item Embalaje (por sector):
+        
+        \begin{itemize}
+
+            \item Aviones: \$2.000.000
+            \item Vehículos: \$1.000.000
+            \item Kerosene: \$500.000\\
+    
+        \end{itemize}
+
+    \end{enumerate}
+
+    \vspace{0.5em}
+
+    \underline{Gasto Fijo Total por Producto}: \\
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Refinado} & \textbf{Fraccionado} & \textbf{Embalaje} & \textbf{Gasto Fijo Total} \\
+            \hline
+            Combustible Aviones & 1.315.790 & 1.315.790 & 2.000.000 & 4.631.580\\
+            \hline
+            Combustible Vehículos & 1.973.684 & 1.973.684 & 1.000.000 & 4.947.368\\
+            \hline
+            Kerosene & 1.710.526 & 1.710.526 & 500.000 & 3.921.052\\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Neta por Producto:} 
+
+    \begin{center}
+        \scalebox{1}{
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Producto} & \textbf{Ganancia bruta} & \textbf{Gasto fijo} & \textbf{Ganancia neta} \\
+            \hline
+            Combustible Aviones & 5.900.000 & 4.631.580 & 1.268.420 \\
+            \hline
+            Combustible Vehículos & 8.700.000 & 4.947.368 & 3.752.632 \\
+            \hline
+            Kerosene & 5.200.000 & 3.921.052 & 1.278.948 \\
+            \hline
+        \end{tabular}
+        }
+    \end{center}
+
+    \vspace{0.5em}
+
+    \textbf{Ganancia Total de la Empresa: } \$1.268.420 + \$3.752.632 + \$1.278.948 = \$6.300.000 \\
+
+    \item Al escuchar esto, el gerente de producción propuso aumentar la producción contratando 500 horas extras al
+    mes del personal del sector de fraccionado. Asesorar al director sobre esta propuesta.\\
+
+    Como se puede observar en el inciso anterior, claramente no es rentable esta propuesta. Esto debido a que para producir
+    la cantidad óptima para maximizar las ganancias de la compañía, no se utilizan las 80.000 horas de capacidad mensual de fraccionado pero sí se 
+    utilizan las 38.000 horas de capacidad mensual de refinado. \\
+
+    Por lo tanto, aunque se agreguen 500 horas extras al sector de fraccionado, no se va a poder producir mas debido a que ya se llego a la capacidad
+    máxima de horas del personal del refinado.\\
+
+    \item Otra propuesta del gerente es contratar 1000 horas extras al mes del personal del sector de refinado. Indicar
+    al director si es conveniente aceptar esta nueva propuesta y hasta cuánto debería pagar por cada hora extra
+    de este sector
+
+    Para poder asesorar al director sobre esta propuesta, haciendo un análisis de sensibilidad, primero debemos plantear el problema 
+    dual del modelo anteriorr.\\
+
+    Si nosotros tenemos el modelo:\\
+
+    \underline{Función objetivo}: 
+
+    \begin{center}
+        
+        Maximizar 5.900 $x_{1}$ + 2.900 $x_{2}$ + 1.200 $x_{3}$
+
+    \end{center}
+
+    \clearpage
+
+    \underline{Restricciones}: 
+
+    \begin{itemize}
+
+        \item Refinado (máximo 38.000 h): 10 $x_{1}$ + 5 $x_{2}$ + 3 $x_{3}$ $\leq$ 38.000
+        \item Fraccionado (máximo 80.000 h): 20 $x_{1}$ + 10 $x_{2}$ + 6 $x_{3}$ $\leq$ 80.000
+        \item Embalaje Combustible Aviones (máximo 4.000 h): 4 $x_{1}$ $\leq$ 4.000 $\rightarrow$ $x_{1}$ $\leq$ 1.000.
+        \item Embalaje Combustible Vehículos (máximo 6.000 h): 2 $x_{2}$ $\leq$ 6.000 $\rightarrow$ $x_{2}$ $\leq$ 3.000.
+        \item Embalaje K (máximo 7.000 h): $x_{3}$ $\leq$ 7.000
+        \item Condiciones de no negatividad: $x_{1}$ $\geq$ 0, $x_{2}$ $\geq$ 0, $x_{3}$ $\geq$ 0\\
+
+    \end{itemize}
+
+    \underline{Solucion del Modelo}: 
+
+    \begin{itemize}
+
+        \item $x_{1}$ = 1.000
+        \item $x_{2}$ = 3.000
+        \item $x_{3}$ = 4.333,333333333333
+        \item $Z$ = \$19.800.000\\
+
+    \end{itemize}
+
+    \vspace{0.5em}
+
+    Entonces el \textbf{Dual} queda de la siguiente manera: \\
+
+    \underline{Función objetivo}: 
+
+    \begin{center}
+        
+        Maximizar 38.000 $y_{1}$ + 80.000 $y_{2}$ + 1.000 $y_{3}$ + 3.000 $y_{4}$ + 7.000 $y_{5}$
+
+    \end{center}
+
+    \underline{Restricciones}: 
+
+    \begin{itemize}
+
+        \item 10 $y_{1}$ + 20 $y_{2}$ + $y_{3}$ $\geq$ 5.900
+        \item 5 $y_{1}$ + 10 $y_{2}$ + $y_{4}$ $\geq$ 2.900
+        \item 3 $y_{1}$ + 6 $y_{2}$ + $y_{5}$ $\geq$ 1.200
+        \item Condiciones de no negatividad: $y_{1}$ $\geq$ 0, $y_{2}$ $\geq$ 0, $y_{3}$ $\geq$ 0, $y_{4}$ $\geq$ 0, $y_{5}$ $\geq$ 0\\
+
+    \end{itemize}
+
+    \underline{Solucion del Modelo}: 
+
+    \begin{itemize}
+
+        \item $y_{1}$ = 400
+        \item $y_{2}$ = 0
+        \item $y_{3}$ = 1.900
+        \item $y_{4}$ = 900
+        \item $y_{5}$ = 0
+        \item $Z$ = \$19.800.000\\
+
+    \end{itemize}
+
+    \underline{Verificamos si cumple las restricciones}:
+
+    \begin{itemize}
+
+        \item 10 x 400 + 20 x 0 + 1 x 1.900 = 5.900 $\geq$ 5.900
+        \item 5 x 400 + 10 x 0 + 1 x 900 = 2.900 $\geq$ 2.900
+        \item 3 x 400 + 6 x 0 + 1 x 0 = 1.200 $\geq$ 1.200
+        \item Condiciones de no negatividad: 400 $\geq$ 0, 0 $\geq$ 0, 1.900 $\geq$ 0, 900 $\geq$ 0, 0 $\geq$ 0\\
+
+    \end{itemize}
+
+    Entonces es solución factible dual.\\
+
+    \clearpage
+
+    Ahora, para hallar la base del diccionario óptimo del problema sabesmo que:
+
+    \begin{itemize}
+
+        \item Si una \textbf{variable primal} $x_{j}$ $>$ 0 $\rightarrow$ \textbf{esta} en la base.
+        \item Si una \textbf{variable primal} $x_{j}$ $=$ 0 $\rightarrow$ \textbf{no esta} en la base.
+        \item Si una \textbf{variable dual} $y_{i}$ $>$ 0 $\rightarrow$  entonces la \textbf{restricción primal} 
+        i está \textbf{activa}, por lo que la \textbf{variable de holgura asociada} está \textbf{fuera de la base}.
+        \item Si una \textbf{variable dual} $y_{i}$ $=$ 0 $\rightarrow$  la restricción primal \textbf{no está activa}, por lo tanto su \textbf{variable de 
+        holgura  esta} en la base. \\
+
+    \end{itemize}
+
+    Por lo que las variables quedan de la sigueinte forma:
+
+    \begin{itemize}
+
+        \item Variables Basicas:
+        \begin{itemize}
+
+            \item $x_{1}$
+            \item $x_{2}$
+            \item $x_{3}$
+            \item $x_{5}$
+            \item $x_{8}$\\
+    
+        \end{itemize}
+        \item Variables No Basicas:
+        \begin{itemize}
+
+            \item $x_{4}$
+            \item $x_{6}$
+            \item $x_{7}$
+    
+        \end{itemize}
+
+    \end{itemize}
+
+    Entonces tenemos los sigueintes datos:\\
+
+    \begin{center}
+    $X_{B} = \{x_{1}, x_{2}, x_{3}, x_{5}, x_{8}\}$ \hspace{1em} $X_{N} = \{x_{4}, x_{6}, x_{7}\}$ 
+    \hspace{1em} $C_{B}$ = \{5.900, 2.900, 1.200, 0, 0\} \hspace{1em} $C_{N} = \{0, 0, 0\}$\\
+    \end{center}
+
+    \[
+    B = \begin{bmatrix}
+    10 & 5  & 3 & 0 & 0 \\
+    20 & 10 & 6 & 1 & 0 \\
+    1  & 0  & 0 & 0 & 0 \\
+    0  & 1  & 0 & 0 & 0 \\
+    0  & 0  & 1 & 0 & 1 \\
+    \end{bmatrix}
+    \hspace{2em}
+    B^{-1} = \begin{bmatrix}
+        0           & 0 &    1	        &   0            &	0 \\
+        0           & 0 &    0	        &   1            &	0 \\
+      \frac{1}{3}   & 0 & -\frac{10}{3} & -\frac{5}{3}   &	0 \\
+       -2           & 1 &    0	        &   0            &	0 \\
+       -\frac{1}{3} & 0 & \frac{10}{3}	& \frac{5}{3}    &	1 \\
+    \end{bmatrix}
+    \]
+    \vspace{1em}
+    \[
+        A = \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1 \\
+        0 & 0 & 0 \\
+        \end{bmatrix}
+        \hspace{2em}
+        b = \begin{bmatrix}
+            $38.000$ \\
+            $80.000$ \\
+            $1.000$  \\
+            $3.000$  \\
+            $7.000$  \\
+        \end{bmatrix}
+    \]
+
+    \vspace{1em}
+
+    Luego, como se agregan 1.000 horas de extras de refinado, b1 = 39.000. \\
+    Ahora hacemos:
+
+    \[
+        B^{-1} \times \begin{bmatrix}
+            $39.000$ \\
+            $80.000$ \\
+            $1.000$  \\
+            $3.000$  \\
+            $7.000$  \\
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            $1.000$ \\
+            $3.000$ \\
+            $$\frac{14.000}{3}$$  \\
+            $2.000$  \\
+            $$\frac{7.000}{3}$$  \\
+        \end{bmatrix}
+    \]
+
+    Da todo positivo, lo que da a entender que la base sigue siendo optima, sin embargo, al correr el modelo en simplex cambindo la variable relacionada al refinado,
+    la nueva solucion es:
+
+    \begin{itemize}
+
+        \item $x_{1}$ = 1.000
+        \item $x_{2}$ = 3.000
+        \item $x_{3}$ = 4.666,666666666667
+        \item $Z$ = \$20.200.000\\
+
+    \end{itemize}
+
+    Lo que demuestra que si conviene aceptar esta propuesta.
+
+    Luego, observando que $y_{1}$ = 400, eso quiere decir que la propuesta va a ser rentable siempre que se pague, hasta como mucho, \$400 por cada hora extra del sector. \\
+
+    
+    \item Si el director decide pagar por hora extra la mitad del valor máximo indicado en el punto anterior, ¿en cuánto
+    aumentaráa la ganacia mensual de la compañía? \\
+
+    Como se puede observar en inciso anterior, el valor dual $y_{1}$ = 400 indica que cada hora adicional de refinado incrementa la ganancia en \$400 (Si
+    se obtiene gratis). \\
+
+    Ahora bien, en este caso, el director decide pagar solo la mitad de ese valor dual, es decir, \$200.\\
+    Por lo tanto, el \textbf{benefico neto} por cada hora extra sera: \$400 - \$200 = \$200. \\
+    Luego, como se compran 1.000 horas extras, el incremento de las ganancia sera: \$200.000.\\
+
+    Es decir, la ganancia mensual de la compañía aumentará en \$200.000 al pagar 1.000 horas extras de refinado a \$200 cada una.
+
+    \item Por otro lado, el gerente de compras propone cambiar algunos proveedores, lo que permitiría bajar el costo
+    de la materia prima del aceite para vehículos de \$1000 a \$800 por cada 1000 litros procesados. ¿Cambiaría el
+    plan de producción óptimo? Si es así, dar la nueva planificación óptima.
+
+    \item Y si se modificara el proceso de refinado de kerosene para bajar de \$1500 a \$900 por cada 1000 litros procesado,
+    ¿cambiaría el plan óptimo? Si es así, dar la nueva planificación óptima.
+    
+    \item La empresa está evaluando comenzar a procesar gasoil. El tiempo requerido para refinar 1000 litros de gasoil
+    es de 4 horas, mientras que para fraccionarlos son necesarias 8 horas y para su embalaje 1.5 horas. El costo
+    de la materia prima para mil litros de gasoil es de \$4000, el de refinado de \$4100, el de fraccionado de \$1000.
+    El embalaje de gasoil lo realizaría el sector de embalaje de kerosene. ¿Cuál debería ser el menor precio de
+    venta de los 1000 litros de gasoil para que su producción sea conveniente para la empresa?
+    
+    \item La empresa va a agregar un control de calidad a todos sus productos. Controlar los 1000 litros de combustible
+    para aviones requiere 5 horas, los de combustible para vehículos 3 horas y 2 horas los 1000 litros de kerosene.
+    Si el sector de control de calidad dispone de 20000 horas mensuales, ¿cambiaría el plan óptimo? Si es así, dar
+    la nueva planificación óptima.
+
+\end{enumerate}
+
+\clearpage
+
+
+\end{document}
